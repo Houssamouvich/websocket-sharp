@@ -50,6 +50,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using WebSocketSharp.Net;
 using WebSocketSharp.Net.WebSockets;
 
@@ -1166,14 +1167,17 @@ namespace WebSocketSharp
       closeAsync (new PayloadData (code, reason), send, send, false);
     }
 
-    private void closeAsync (
+    private async void closeAsync (
       PayloadData payloadData, bool send, bool receive, bool received
     )
     {
       Action<PayloadData, bool, bool, bool> closer = close;
-      closer.BeginInvoke (
-        payloadData, send, receive, received, ar => closer.EndInvoke (ar), null
-      );
+
+      await Task.Run(() => closer.Invoke(payloadData, send, receive, received));
+
+      //closer.BeginInvoke (
+      //  payloadData, send, receive, received, ar => closer.EndInvoke (ar), null
+      //);
     }
 
     private bool closeHandshake (byte[] frameAsBytes, bool receive, bool received)
@@ -1529,7 +1533,7 @@ namespace WebSocketSharp
       ThreadPool.QueueUserWorkItem (state => messages (e));
     }
 
-    private void open ()
+    private async void open ()
     {
       _inMessage = true;
       startReceiving ();
@@ -1550,8 +1554,10 @@ namespace WebSocketSharp
 
         e = _messageEventQueue.Dequeue ();
       }
-
-      _message.BeginInvoke (e, ar => _message.EndInvoke (ar), null);
+       //     _message.Invoke(e);
+        
+       await Task.Run(() =>_message.Invoke(e));
+        //_message.BeginInvoke (e, ar => _message.EndInvoke (ar), null);
     }
 
     private bool ping (byte[] data)
@@ -1949,29 +1955,43 @@ namespace WebSocketSharp
       }
     }
 
-    private void sendAsync (Opcode opcode, Stream stream, Action<bool> completed)
+    private async void sendAsync (Opcode opcode, Stream stream, Action<bool> completed)
     {
-      Func<Opcode, Stream, bool> sender = send;
-      sender.BeginInvoke (
-        opcode,
-        stream,
-        ar => {
-          try {
-            var sent = sender.EndInvoke (ar);
+        Func<Opcode, Stream, bool> sender = send;
+        var senderTask = await Task.Run(() => sender.Invoke(opcode, stream));
+        try
+        {
             if (completed != null)
-              completed (sent);
-          }
-          catch (Exception ex) {
-            _logger.Error (ex.ToString ());
-            error (
-              "An error has occurred during the callback for an async send.",
-              ex
+                completed(senderTask);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.ToString());
+            error(
+                "An error has occurred during the callback for an async send.",
+                ex
             );
-          }
-        },
-        null
-      );
-    }
+        }
+        //sender.BeginInvoke (
+        //  opcode,
+        //  stream,
+        //  ar => {
+        //    try {
+        //      var sent = sender.EndInvoke (ar);
+        //      if (completed != null)
+        //        completed (sent);
+        //    }
+        //    catch (Exception ex) {
+        //      _logger.Error (ex.ToString ());
+        //      error (
+        //        "An error has occurred during the callback for an async send.",
+        //        ex
+        //      );
+        //    }
+        //  },
+        //  null
+        //);
+        }
 
     private bool sendBytes (byte[] bytes)
     {
@@ -2531,7 +2551,7 @@ namespace WebSocketSharp
     ///   The connection has already been closed.
     ///   </para>
     /// </exception>
-    public void AcceptAsync ()
+    public async void AcceptAsync ()
     {
       if (_client) {
         var msg = "This instance is a client.";
@@ -2549,13 +2569,20 @@ namespace WebSocketSharp
       }
 
       Func<bool> acceptor = accept;
-      acceptor.BeginInvoke (
-        ar => {
-          if (acceptor.EndInvoke (ar))
-            open ();
-        },
-        null
-      );
+      
+      var acceptorTask = await Task.Run(() =>acceptor.Invoke());
+
+      if(acceptorTask)
+       {
+         open();
+       }
+      //acceptor.BeginInvoke (
+      //  ar => {
+      //    if (acceptor.EndInvoke (ar))
+      //      open ();
+      //  },
+      //  null
+      //);
     }
 
     /// <summary>
@@ -3264,7 +3291,7 @@ namespace WebSocketSharp
     ///   A series of reconnecting has failed.
     ///   </para>
     /// </exception>
-    public void ConnectAsync ()
+    public async void ConnectAsync ()
     {
       if (!_client) {
         var msg = "This instance is not a client.";
@@ -3281,14 +3308,19 @@ namespace WebSocketSharp
         throw new InvalidOperationException (msg);
       }
 
-      Func<bool> connector = connect;
-      connector.BeginInvoke (
-        ar => {
-          if (connector.EndInvoke (ar))
-            open ();
-        },
-        null
-      );
+        Func<bool> connector = connect;
+        var connectorTask = await Task.Run(() => connector.Invoke());
+        if(connectorTask)
+        {
+            open();
+        }
+      //connector.BeginInvoke (
+      //  ar => {
+      //    if (connector.EndInvoke (ar))
+      //      open ();
+      //  },
+      //  null
+      //);
     }
 
     /// <summary>

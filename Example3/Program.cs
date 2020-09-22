@@ -18,7 +18,7 @@ namespace Example3
       // create a new instance with the 'secure' parameter set to true,
       // or an https scheme HTTP URL.
 
-      var httpsv = new HttpServer (4649);
+      //var httpsv = new HttpServer (4649);
       //var httpsv = new HttpServer (5963, true);
 
       //var httpsv = new HttpServer (System.Net.IPAddress.Any, 4649);
@@ -39,7 +39,7 @@ namespace Example3
       //var httpsv = new HttpServer (System.Net.IPAddress.IPv6Loopback, 4649);
       //var httpsv = new HttpServer (System.Net.IPAddress.IPv6Loopback, 5963, true);
 
-      //var httpsv = new HttpServer ("http://localhost:4649");
+      var httpsv = new HttpServer ("http://localhost:4649");
       //var httpsv = new HttpServer ("https://localhost:5963");
 
       //var httpsv = new HttpServer ("http://127.0.0.1:4649");
@@ -47,7 +47,7 @@ namespace Example3
 
       //var httpsv = new HttpServer ("http://[::1]:4649");
       //var httpsv = new HttpServer ("https://[::1]:5963");
-#if DEBUG
+//#if DEBUG
       // To change the logging level.
       httpsv.Log.Level = LogLevel.Trace;
 
@@ -56,7 +56,7 @@ namespace Example3
 
       // Not to remove the inactive WebSocket sessions periodically.
       //httpsv.KeepClean = false;
-#endif
+//#endif
       // To provide the secure connection.
       /*
       var cert = ConfigurationManager.AppSettings["ServerCertFile"];
