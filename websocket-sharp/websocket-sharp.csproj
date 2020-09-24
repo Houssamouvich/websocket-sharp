@@ -9,13 +9,16 @@
 	<DelaySign>false</DelaySign>
 	<Configurations>Debug;Release;Debug_Ubuntu;Release_Ubuntu</Configurations>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageId>websocket-sharp-core</PackageId>
-	<Authors>websocket-sharp-core</Authors>
-	<Product>websocket-sharp-core</Product>
+	<PackageId>websocket-sharp-dotnet-core</PackageId>
+	<Authors>websocket-sharp-dotnet-core</Authors>
+	<Product>websocket-sharp-dotnet-core</Product>
     <RepositoryUrl>https://github.com/Houssamouvich/websocket-sharp/
 </RepositoryUrl>
-    <Company>websocket-sharp-core</Company>
+    <Company>websocket-sharp-dotnet-core</Company>
     <RepositoryType>url</RepositoryType>
+    <PackageProjectUrl>https://github.com/Houssamouvich/websocket-sharp/</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Ubuntu|AnyCPU'">
