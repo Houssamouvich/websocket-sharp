@@ -3,8 +3,29 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Example</RootNamespace>
+
+	<Configurations>Debug;Release;Debug_Ubuntu;Release_Ubuntu</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\websocket-sharp\websocket-sharp.csproj" />
   </ItemGroup>

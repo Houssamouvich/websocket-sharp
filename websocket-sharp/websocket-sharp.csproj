@@ -1,24 +1,41 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>websocket_sharp</RootNamespace>
-	<RuntimeIdentifiers>win10-x64;linux-x64</RuntimeIdentifiers>
 	<SignAssembly>true</SignAssembly>
 	<AssemblyOriginatorKeyFile>websocket-sharp.snk</AssemblyOriginatorKeyFile>
 	<DelaySign>false</DelaySign>
 	<Configurations>Debug;Release;Debug_Ubuntu;Release_Ubuntu</Configurations>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>websocket-sharp-core</PackageId>
+	<Authors>websocket-sharp-core</Authors>
+	<Product>websocket-sharp-core</Product>
+    <RepositoryUrl>https://github.com/Houssamouvich/websocket-sharp/
+</RepositoryUrl>
+    <Company>websocket-sharp-core</Company>
+    <RepositoryType>url</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <Optimize>false</Optimize>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <Optimize>true</Optimize>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>

@@ -3,8 +3,29 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Example3</RootNamespace>
+
+	<Configurations>Debug;Release;Debug_Ubuntu;Release_Ubuntu</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Ubuntu|AnyCPU'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0-rc.1.20451.14" />
   </ItemGroup>
