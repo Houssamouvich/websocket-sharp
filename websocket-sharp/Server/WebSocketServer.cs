@@ -43,6 +43,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Runtime.InteropServices;
 using WebSocketSharp.Net;
 using WebSocketSharp.Net.WebSockets;
 
@@ -1010,6 +1011,11 @@ namespace WebSocketSharp.Server
     private void stopReceiving (int millisecondsTimeout)
     {
       try {
+        
+        //shutdown socket before stopping listener in linux
+        if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            _listener.Server.Shutdown(SocketShutdown.Both);
+
         _listener.Stop ();
       }
       catch (Exception ex) {
